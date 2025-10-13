@@ -284,4 +284,4 @@ mvn -q -DskipTests=false test
 
 ## Übung 1
 - Autor: Sebastian Buresch
-- Besonderheit: Ich habe bereits ein wenig Erfahrung mit Git und GitHub, arbeite aber zum ersten Mal mit einem vollständigen CI/CD-Workflow inklusive Maven, GitHub Actions und SonarCloud.
+- Besonderheit: Ich habe bereits ein wenig Erfahrung mit Git und GitHub, arbeite aber zum ersten Mal mit einem vollständigen CI/CD-Workflow inklusive Maven, GitHub Actions und SonarCloud. 👻
