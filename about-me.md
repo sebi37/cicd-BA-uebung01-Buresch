@@ -5,3 +5,5 @@ Erwartungen: Git Profi werden! Und endlich automatisierte Tests!
     - GuitarNerd
     - ITNerd
     - DadToBe
+    Wrum ist CI/CD für mich relevant:
+    In den Projekten alles automatiesieren sollten wir bei der API oder in der App neue features implementieren und testen.
