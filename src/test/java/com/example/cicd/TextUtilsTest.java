@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
  * - In Uebung 2 sollte dieser Bug gefixt werden.
  */
 
- /* 
+ 
 class TextUtilsTest {
 
     @Test
@@ -30,4 +30,4 @@ class TextUtilsTest {
     }
     
 }
-    */
+    
