@@ -9,15 +9,15 @@ public class App {
     public static void main(String[] args) {
         Calculator calc = new Calculator();
         int sum = calc.add(2, 3);
-        LOGGER.info("Sum(2,3) = " + sum);
+        LOGGER.info(() -> String.format("Sum(2,3) = %d", sum));
         
         List<Integer> numbers = Arrays.asList(1, 2, 3, 4);
         int s1 = calc.sumUp(numbers); 
         int s2 = calc.addAll(numbers);   
-        LOGGER.info("sumUp=" + s1 + ", addAll=" + s2);
+        LOGGER.info(() -> String.format("sumUp=%d, addAll=%d", s1, s2));
 
-        LOGGER.info("isPalindrome('Anna')? " + TextUtils.isPalindrome("Anna"));
-        LOGGER.info("safeParseInt('42'): " + TextUtils.safeParseInt("42"));
-        LOGGER.info("safeParseInt('x'): " + TextUtils.safeParseInt("x"));
+        LOGGER.info(() -> String.format("isPalindrome('Anna')? %b", TextUtils.isPalindrome("Anna")));
+        LOGGER.info(() -> String.format("safeParseInt('42'): %d", TextUtils.safeParseInt("42")));
+        LOGGER.info(() -> String.format("safeParseInt('x'): %d", TextUtils.safeParseInt("x")));
     }
 }
