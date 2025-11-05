@@ -1,5 +1,7 @@
 # CI/CD Übung – Java Basisprojekt (Ü1 mit Anleitungen)
 
+[![CI Build & Test](https://github.com/sebi37/cicd-BA-uebung01-Buresch/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/sebi37/cicd-BA-uebung01-Buresch/actions/workflows/ci.yml)
+
 Dieses Repository ist der Startpunkt für **Übung 1** und wird in **allen folgenden Übungen** weiterverwendet
 (CI mit GitHub Actions → SonarCloud → Docker → Security-Scan).
 
