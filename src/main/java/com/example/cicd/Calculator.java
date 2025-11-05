@@ -40,12 +40,6 @@ public class Calculator {
     }
 
     public int addAll(List<Integer> nums) {
-        int s = 0;
-        for (Integer n : nums) {
-            if (n != null) {
-                s += n;
-            }
-        }
-        return s;
+        return sumUp(nums);
     }
 }
