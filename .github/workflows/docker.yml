@@ -1,12 +1,14 @@
 name: Docker Build and Artifact Export
 
 on:
-  push:
-    branches: [ "main" ]
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
 
 jobs:
   docker:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Build & Export Docker Image
     runs-on: ubuntu-latest
     steps:

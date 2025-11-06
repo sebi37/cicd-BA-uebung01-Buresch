@@ -8,7 +8,9 @@ RUN mvn dependency:go-offline
 
 # Jetzt Quellcode hinzufügen und bauen
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN mvn -B clean package -DskipTests \
+ && echo "✅ Build complete, verifying JAR..." \
+ && ls -lh target
 
 # -------- Stage 2: Runtime --------
 FROM eclipse-temurin:17-jre
