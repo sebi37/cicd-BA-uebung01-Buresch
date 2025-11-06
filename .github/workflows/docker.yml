@@ -1,0 +1,43 @@
+name: Docker Build and Artifact Export
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  docker:
+    name: Build & Export Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract short SHA
+        id: vars
+        run: echo "sha_short=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+
+      - name: Build Docker image (single-arch)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          load: true
+          tags: local/app:${{ env.sha_short }}
+
+      - name: Verify image and show files
+        run: |
+          docker images
+          docker run --rm local/app:${{ env.sha_short }}
+
+      - name: Save image as tar.gz
+        run: docker save local/app:${{ env.sha_short }} | gzip > docker-image-${{ env.sha_short }}.tar.gz
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image-${{ env.sha_short }}
+          path: docker-image-${{ env.sha_short }}.tar.gz

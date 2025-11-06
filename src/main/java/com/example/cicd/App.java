@@ -19,5 +19,9 @@ public class App {
         LOGGER.info(() -> String.format("isPalindrome('Anna')? %b", TextUtils.isPalindrome("Anna")));
         LOGGER.info(() -> String.format("safeParseInt('42'): %d", TextUtils.safeParseInt("42")));
         LOGGER.info(() -> String.format("safeParseInt('x'): %d", TextUtils.safeParseInt("x")));
+
+
+        // für Konsolen-Ausgabe
+        System.out.println("666 Konsolentest 666");
     }
 }
