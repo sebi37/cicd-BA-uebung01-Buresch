@@ -2,7 +2,7 @@ name: Docker Build and Artifact Export
 
 on:
   workflow_run:
-    workflows: ["CI Pipeline"]
+    workflows: ["CI Build & Test"]
     types:
       - completed
 
