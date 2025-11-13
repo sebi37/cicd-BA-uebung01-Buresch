@@ -2,6 +2,8 @@
 
 [![CI Build & Test](https://github.com/sebi37/cicd-BA-uebung01-Buresch/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/sebi37/cicd-BA-uebung01-Buresch/actions/workflows/ci.yml)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sebi37_cicd-BA-uebung01-Buresch&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=sebi37_cicd-BA-uebung01-Buresch)
+
 Dieses Repository ist der Startpunkt für **Übung 1** und wird in **allen folgenden Übungen** weiterverwendet
 (CI mit GitHub Actions → SonarCloud → Docker → Security-Scan).
 
