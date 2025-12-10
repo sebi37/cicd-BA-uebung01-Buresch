@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 🔥 FIXED: short SHA als OUTPUT, nicht als ENV
+      # kurzen SHA aus dem auslösenden Workflow holen (für Tag & Artefaktnamen)
       - name: Extract short SHA from triggering workflow
         id: vars
         run: echo "sha_short=$(echo '${{ github.event.workflow_run.head_sha }}' | cut -c1-7)" >> $GITHUB_OUTPUT
@@ -24,20 +24,13 @@ jobs:
       - name: Debug SHA
         run: echo "Using SHA = ${{ steps.vars.outputs.sha_short }}"
 
-      # 🔥 FIXED: Artifact mit Step-Output referenzieren
-      - name: Download Docker Image Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: docker-image-${{ steps.vars.outputs.sha_short }}
-          path: .
-
-      - name: Load Docker image
+      # Docker-Image hier im Security-Job neu bauen
+      - name: Build Docker image for security scan
         run: |
-          gunzip -c docker-image-${{ steps.vars.outputs.sha_short }}.tar.gz > image.tar
-          docker load -i image.tar
+          docker build -t local/app:${{ steps.vars.outputs.sha_short }} .
 
       ################################
-      #        TRIVY SCAN           #
+      #           TRIVY              #
       ################################
 
       - name: Install Trivy
@@ -64,7 +57,7 @@ jobs:
           path: trivy-report.json
 
       ################################
-      #        GRYPE SCAN           #
+      #           GRYPE              #
       ################################
 
       - name: Install Grype
