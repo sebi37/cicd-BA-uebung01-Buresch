@@ -16,19 +16,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 🔥 FIXED: short SHA als OUTPUT, nicht als ENV
       - name: Extract short SHA from triggering workflow
         id: vars
-        run: echo "sha_short=$(echo '${{ github.event.workflow_run.head_sha }}' | cut -c1-7)" >> $GITHUB_ENV
+        run: echo "sha_short=$(echo '${{ github.event.workflow_run.head_sha }}' | cut -c1-7)" >> $GITHUB_OUTPUT
 
+      - name: Debug SHA
+        run: echo "Using SHA = ${{ steps.vars.outputs.sha_short }}"
+
+      # 🔥 FIXED: Artifact mit Step-Output referenzieren
       - name: Download Docker Image Artifact
         uses: actions/download-artifact@v4
         with:
-          name: docker-image-${{ env.sha_short }}
+          name: docker-image-${{ steps.vars.outputs.sha_short }}
           path: .
 
       - name: Load Docker image
         run: |
-          gunzip -c docker-image-${{ env.sha_short }}.tar.gz > image.tar
+          gunzip -c docker-image-${{ steps.vars.outputs.sha_short }}.tar.gz > image.tar
           docker load -i image.tar
 
       ################################
@@ -50,12 +55,12 @@ jobs:
             --scanners vuln \
             --format json \
             --output trivy-report.json \
-            local/app:${{ env.sha_short }} || true
+            local/app:${{ steps.vars.outputs.sha_short }} || true
 
       - name: Upload Trivy JSON report
         uses: actions/upload-artifact@v4
         with:
-          name: trivy-report-${{ env.sha_short }}
+          name: trivy-report-${{ steps.vars.outputs.sha_short }}
           path: trivy-report.json
 
       ################################
@@ -70,11 +75,11 @@ jobs:
       - name: Grype image scan (JSON report)
         run: |
           grype \
-            local/app:${{ env.sha_short }} \
+            local/app:${{ steps.vars.outputs.sha_short }} \
             -o json > grype-report.json || true
 
       - name: Upload Grype JSON report
         uses: actions/upload-artifact@v4
         with:
-          name: grype-report-${{ env.sha_short }}
+          name: grype-report-${{ steps.vars.outputs.sha_short }}
           path: grype-report.json
