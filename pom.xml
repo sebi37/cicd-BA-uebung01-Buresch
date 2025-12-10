@@ -8,13 +8,16 @@
   <version>1.0.0</version>
   <name>ci-cd-uebung</name>
   <description>Übung 1: Java-Basisprojekt für CI/CD Kurs</description>
+
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <junit.jupiter.version>5.10.2</junit.jupiter.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
   <dependencies>
+
     <!-- JUnit 5 API -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -22,13 +25,15 @@
       <version>${junit.jupiter.version}</version>
       <scope>test</scope>
     </dependency>
-    <!-- JUnit 5 Engine (wichtig für das Ausführen der Tests) -->
+
+    <!-- JUnit 5 Engine -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>${junit.jupiter.version}</version>
       <scope>test</scope>
     </dependency>
+
     <!-- Optional: Parameterized tests -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -36,9 +41,39 @@
       <version>${junit.jupiter.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- Vulnerability #1: Log4j (CRITICAL CVEs) -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.14.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.14.1</version>
+    </dependency>
+
+    <!-- Vulnerability #2: Jackson Databind (mehrere HIGH CVEs) -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.9.10</version>
+    </dependency>
+
+    <!-- JUnit 4 (optional, hat CVE-2020-15250) -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.1</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
+
   <build>
     <plugins>
+
       <!-- JUnit 5/Surefire -->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -52,7 +87,8 @@
           </includes>
         </configuration>
       </plugin>
-      <!-- JaCoCo Coverage (für SonarCloud in Übung 2 hilfreich) -->
+
+      <!-- JaCoCo -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -62,22 +98,24 @@
           <execution><id>report</id><phase>test</phase><goals><goal>report</goal></goals></execution>
         </executions>
       </plugin>
-      <!-- Jar Plugin für Main-Class Manifest -->
-<plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-jar-plugin</artifactId>
-  <version>3.3.0</version>
-  <configuration>
-    <archive>
-      <manifest>
-        <addClasspath>true</addClasspath>
-        <classpathPrefix>lib/</classpathPrefix>
-        <mainClass>com.example.cicd.App</mainClass>
-      </manifest>
-    </archive>
-  </configuration>
-</plugin>
+
+      <!-- Jar Plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>lib/</classpathPrefix>
+              <mainClass>com.example.cicd.App</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
-</project>
 
+</project>
