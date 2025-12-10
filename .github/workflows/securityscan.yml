@@ -16,27 +16,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Extract short SHA
+      - name: Extract short SHA from triggering workflow
         id: vars
-        run: echo "sha_short=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+        run: echo "sha_short=$(echo '${{ github.event.workflow_run.head_sha }}' | cut -c1-7)" >> $GITHUB_ENV
 
-      - name: Load Docker image from previous workflow
+      - name: Download Docker Image Artifact
         uses: actions/download-artifact@v4
         with:
           name: docker-image-${{ env.sha_short }}
           path: .
 
-      - name: Load image into Docker
+      - name: Load Docker image
         run: |
           gunzip -c docker-image-${{ env.sha_short }}.tar.gz > image.tar
           docker load -i image.tar
 
       ################################
       #        TRIVY SCAN           #
-      
+      ################################
 
       - name: Install Trivy
         run: |
@@ -63,7 +60,7 @@ jobs:
 
       ################################
       #        GRYPE SCAN           #
-      
+      ################################
 
       - name: Install Grype
         run: |
