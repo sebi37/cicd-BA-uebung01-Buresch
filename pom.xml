@@ -61,6 +61,13 @@
       <version>2.9.10</version>
     </dependency>
 
+    <!-- Vulnerability #3: Apache Commons Text (CVE-2022-42889 "Text4Shell") -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.9</version>
+    </dependency>
+
     <!-- JUnit 4 (optional, hat CVE-2020-15250) -->
     <dependency>
       <groupId>junit</groupId>
