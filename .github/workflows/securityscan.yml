@@ -43,6 +43,7 @@ jobs:
           sudo apt-get install -y trivy
 
       - name: Trivy image scan (JSON report)
+        if: ${{ always() }}
         run: |
           trivy image \
             --scanners vuln \
@@ -51,9 +52,10 @@ jobs:
             --exit-code 1 \
             --format json \
             --output trivy-report.json \
-            local/app:${{ steps.vars.outputs.sha_short }} || true
+            local/app:${{ steps.vars.outputs.sha_short }}
 
       - name: Upload Trivy JSON report
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: trivy-report-${{ steps.vars.outputs.sha_short }}
@@ -69,14 +71,16 @@ jobs:
             sudo sh -s -- -b /usr/local/bin
 
       - name: Grype image scan (JSON report)
+        if: ${{ always() }}
         run: |
           grype \
             --fail-on high \
             --only-fixed \
             local/app:${{ steps.vars.outputs.sha_short }} \
-            -o json > grype-report.json || true
+            -o json > grype-report.json
 
       - name: Upload Grype JSON report
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: grype-report-${{ steps.vars.outputs.sha_short }}
@@ -87,20 +91,23 @@ jobs:
       ############################################
 
       - name: Scan Maven Dependencies with Grype
+        if: ${{ always() }}
         run: |
           grype \
             --fail-on high \
             --only-fixed \
             dir:. \
-            -o json > grype-maven-report.json || true
+            -o json > grype-maven-report.json
 
       - name: Upload Grype Maven report
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: grype-maven-report-${{ steps.vars.outputs.sha_short }}
           path: grype-maven-report.json
 
       - name: Scan Maven Dependencies with Trivy
+        if: ${{ always() }}
         run: |
           trivy fs \
             --scanners vuln \
@@ -109,9 +116,10 @@ jobs:
             --exit-code 1 \
             --format json \
             --output trivy-maven-report.json \
-            . || true
+            .
 
       - name: Upload Trivy Maven report
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: trivy-maven-report-${{ steps.vars.outputs.sha_short }}
