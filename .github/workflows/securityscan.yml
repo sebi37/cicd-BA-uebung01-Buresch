@@ -76,3 +76,31 @@ jobs:
         with:
           name: grype-report-${{ steps.vars.outputs.sha_short }}
           path: grype-report.json
+
+      ############################################
+      #   MAVEN DEPENDENCY SCANS (FS/DIRECTORY)  #
+      ############################################
+
+      - name: Scan Maven Dependencies with Grype
+        run: |
+          grype dir:. -o json > grype-maven-report.json || true
+
+      - name: Upload Grype Maven report
+        uses: actions/upload-artifact@v4
+        with:
+          name: grype-maven-report-${{ steps.vars.outputs.sha_short }}
+          path: grype-maven-report.json
+
+      - name: Scan Maven Dependencies with Trivy
+        run: |
+          trivy fs \
+            --scanners vuln \
+            --format json \
+            --output trivy-maven-report.json \
+            . || true
+
+      - name: Upload Trivy Maven report
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-maven-report-${{ steps.vars.outputs.sha_short }}
+          path: trivy-maven-report.json
