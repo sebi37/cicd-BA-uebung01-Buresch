@@ -46,6 +46,9 @@ jobs:
         run: |
           trivy image \
             --scanners vuln \
+            --severity HIGH,CRITICAL \
+            --ignore-unfixed \
+            --exit-code 1 \
             --format json \
             --output trivy-report.json \
             local/app:${{ steps.vars.outputs.sha_short }} || true
@@ -68,6 +71,8 @@ jobs:
       - name: Grype image scan (JSON report)
         run: |
           grype \
+            --fail-on high \
+            --only-fixed \
             local/app:${{ steps.vars.outputs.sha_short }} \
             -o json > grype-report.json || true
 
@@ -83,7 +88,11 @@ jobs:
 
       - name: Scan Maven Dependencies with Grype
         run: |
-          grype dir:. -o json > grype-maven-report.json || true
+          grype \
+            --fail-on high \
+            --only-fixed \
+            dir:. \
+            -o json > grype-maven-report.json || true
 
       - name: Upload Grype Maven report
         uses: actions/upload-artifact@v4
@@ -95,6 +104,9 @@ jobs:
         run: |
           trivy fs \
             --scanners vuln \
+            --severity HIGH,CRITICAL \
+            --ignore-unfixed \
+            --exit-code 1 \
             --format json \
             --output trivy-maven-report.json \
             . || true
